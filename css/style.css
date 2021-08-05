@@ -32,8 +32,10 @@ body {
 }
 
 main {
-    margin: 106px 0;
+    margin-top: 106px;
     background-color: rgb(176, 250, 213);
+    height: 500px;
+    overflow-y: scroll;
 }
 
 .bottom-bar {
@@ -53,7 +55,7 @@ main {
 
 .writing {
     height: 30px;
-    width: 220px;
+    width: 550px;
     border: none;
     outline: none;
     font-size: 18px;
@@ -67,4 +69,5 @@ main {
 
 .send-message {
     font-size: 26px;
+    cursor: pointer;
 }
