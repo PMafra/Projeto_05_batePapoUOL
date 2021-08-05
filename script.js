@@ -14,9 +14,9 @@ function sendUserName () {
     }
     const userNameData = {name};
     
-    const requisition = axios.post(SERVER_URL_NAMES, userNameData);
-    requisition.catch(handleNameError);
-    requisition.then(processNameSucess);
+    const requestName = axios.post(SERVER_URL_NAMES, userNameData);
+    requestName.catch(handleNameError);
+    requestName.then(processNameSucess);
     
 }
 
@@ -44,14 +44,22 @@ function userStatus (name) {
 }
 
 function processPage () {
-    const promise = axios.get(SERVER_URL_MESSAGES);
-    promise.then(processMessagesSucess);
-    promise.catch(handleMessagesError);
+    const promiseMessages = axios.get(SERVER_URL_MESSAGES);
+    promiseMessages.then(processMessagesSucess);
+    promiseMessages.catch(handleMessagesError);
 }
 
 function processMessagesSucess (sucess) {
     console.log(sucess.data);
     for (let i = 0; i < sucess.data.length; i++) {
+        /*
+        if (sucess.data[i].type === "status"){
+        }
+        if (sucess.data[i].type === "message"){
+        }
+        if (sucess.data[i].type === "private_message"){
+        }
+        */
         let allMessages = document.querySelector("main");
         allMessages.innerHTML += `<div>${sucess.data[i].time}  ${sucess.data[i].from}  ${sucess.data[i].to}  ${sucess.data[i].text}</div>`;
         document.querySelector("main").lastElementChild.scrollIntoView();
@@ -62,17 +70,23 @@ function handleMessagesError (error) {
     console.log(error.response.status);
 }
 
+/*
+function sendMessage () {
 
-function send () {
-    let message = document.querySelector(".writing").value;
+    let text = document.querySelector(".writing").value;
+    let to = document.querySelector(".").innerHTML;
+    let from = document.querySelector(".").innerHTML;
 
-    document.querySelector("main").innerHTML += `<div>${message}</div>`
+    let objectMessage = {from, to, text, type: "message"};
+    const requestMessage = axios.post(SERVER_URL_MESSAGES, objectMessage);
+
+    document.querySelector("main").innerHTML += `<div>${text}</div>`
     document.querySelector("main").lastElementChild.scrollIntoView();
-    /*let inputField = document.querySelector(".bottom-bar");
-    inputField.firstElementChild.innerHTML = '<input class="writing" type="text" placeholder="Escreva aqui...">'
-    */
+    //let inputField = document.querySelector(".bottom-bar");
+    //inputField.firstElementChild.innerHTML = '<input class="writing" type="text" placeholder="Escreva aqui...">'
+    
 }
-
+*/
 
 /*  
 function orderData () {

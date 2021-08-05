@@ -38,6 +38,56 @@ main {
     overflow-y: scroll;
 }
 
+.side-bar {
+    width: 259px;
+    background-color: #e06060;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 6;
+    padding: 0 27px 35px 21px;
+}
+
+.side-bar-section {
+    background-color: blueviolet;
+}
+
+.options {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.option {
+    background-color: cornflowerblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16.6px ;
+}
+
+.option-name {
+    display: flex;
+    background-color: darkgoldenrod;
+}
+
+.option-name p {
+    width: 170px;
+}
+
+.check {
+    color: #28BB25;
+}
+
+.hidden {
+    display: none;
+}
+
+.invisible {
+    opacity: 0;
+}
+
 .bottom-bar {
     height: 80px;
     width: 100vw;
