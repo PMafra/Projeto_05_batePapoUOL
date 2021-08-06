@@ -3,7 +3,8 @@ const SERVER_URL_STATUS = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uo
 const SERVER_URL_MESSAGES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages"
 
 //sendUserName();
-processPage();
+renderPage()
+//setInterval(renderPage, 3000);
 
 function sendUserName () {
 
@@ -12,9 +13,9 @@ function sendUserName () {
     while (name === "") {
         name = prompt("Qual o seu nome?");
     }
-    const userNameData = {name};
+    let userNameData = {name};
     
-    const requestName = axios.post(SERVER_URL_NAMES, userNameData);
+    let requestName = axios.post(SERVER_URL_NAMES, userNameData);
     requestName.catch(handleNameError);
     requestName.then(processNameSucess);
     
@@ -22,7 +23,7 @@ function sendUserName () {
 
 function handleNameError (error) {
 
-    console.log(error.response.status);
+    console.log(error);
     if (error.response.status === 400){
         alert("Já existe um usuário com esse nome!");
     }
@@ -43,26 +44,29 @@ function userStatus (name) {
     requestStatus.then(function () {alert("voce se mantem conectado")});
 }
 
-function processPage () {
+function renderPage () {
     const promiseMessages = axios.get(SERVER_URL_MESSAGES);
     promiseMessages.then(processMessagesSucess);
     promiseMessages.catch(handleMessagesError);
 }
 
 function processMessagesSucess (sucess) {
-    console.log(sucess.data);
+
+    let allMessages = document.querySelector("main");
     for (let i = 0; i < sucess.data.length; i++) {
-        /*
+        
         if (sucess.data[i].type === "status"){
+            allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p>${sucess.data[i].text}</p></div>`;
+            document.querySelector("main").lastElementChild.scrollIntoView();
         }
         if (sucess.data[i].type === "message"){
+            allMessages.innerHTML += `<div class="message-box normal-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
+            document.querySelector("main").lastElementChild.scrollIntoView();
         }
         if (sucess.data[i].type === "private_message"){
+            allMessages.innerHTML += `<div class="message-box private-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> reservadamente para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
+            document.querySelector("main").lastElementChild.scrollIntoView();
         }
-        */
-        let allMessages = document.querySelector("main");
-        allMessages.innerHTML += `<div>${sucess.data[i].time}  ${sucess.data[i].from}  ${sucess.data[i].to}  ${sucess.data[i].text}</div>`;
-        document.querySelector("main").lastElementChild.scrollIntoView();
     }
 }
 
@@ -70,7 +74,7 @@ function handleMessagesError (error) {
     console.log(error.response.status);
 }
 
-/*
+
 function sendMessage () {
 
     let text = document.querySelector(".writing").value;
@@ -86,7 +90,25 @@ function sendMessage () {
     //inputField.firstElementChild.innerHTML = '<input class="writing" type="text" placeholder="Escreva aqui...">'
     
 }
-*/
+
+function sideBar () {
+    const sideBar = document.querySelector(".side-bar");
+    sideBar.classList.remove("hidden");
+    const blurredBackground = document.querySelector(".blurred-background");
+    blurredBackground.classList.remove("hidden");
+}
+
+function closeSideBar () {
+    const sideBar = document.querySelector(".side-bar");
+    sideBar.classList.add("hidden");
+    const blurredBackground = document.querySelector(".blurred-background");
+    blurredBackground.classList.add("hidden");
+}
+
+function choose (element) {
+    element.lastElementChild.lastElementChild.classList.add("visible");
+}
+
 
 /*  
 function orderData () {

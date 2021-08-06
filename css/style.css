@@ -29,47 +29,49 @@ body {
 
 .people {
     font-size: 42px;
+    cursor: pointer;
 }
 
 main {
     margin-top: 106px;
-    background-color: rgb(176, 250, 213);
+    background-color: #F3F3F3;
     height: 500px;
     overflow-y: scroll;
 }
 
 .side-bar {
     width: 259px;
-    background-color: #e06060;
+    background-color: #ffffff;
     height: 100vh;
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 6;
+    z-index: 7;
     padding: 0 27px 35px 21px;
-}
-
-.side-bar-section {
-    background-color: blueviolet;
 }
 
 .options {
     text-align: center;
     margin-top: 35px;
+    font-size: 16px;
+}
+
+.font-weight-700 {
+    font-weight: 700;
 }
 
 .option {
-    background-color: cornflowerblue;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-top: 16.6px ;
+    margin-top: 18px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .option-name {
     display: flex;
-    background-color: darkgoldenrod;
 }
 
 .option-name p {
@@ -78,14 +80,25 @@ main {
 
 .check {
     color: #28BB25;
+    opacity: 0;
 }
 
 .hidden {
     display: none;
 }
 
-.invisible {
-    opacity: 0;
+.visible {
+    opacity: 1;
+}
+
+.blurred-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 6;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .bottom-bar {
@@ -120,4 +133,33 @@ main {
 .send-message {
     font-size: 26px;
     cursor: pointer;
+}
+
+.message-box {
+    display: flex;
+    /* align-items: center; */
+    font-size: 14px;
+    padding: 15px 9px;
+    background-color: blanchedalmond;
+    margin-top: 4px;
+}
+
+.message-box * {
+    margin-right: 5px;
+}
+
+time {
+    color: #aaaaaa;
+}
+
+.status {
+    background-color: #DCDCDC;
+}
+
+.normal-message {
+    background-color: #ffffff;
+}
+
+.private-message {
+    background-color: #FFDEDE;
 }

@@ -1,32 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     <title>Bate-Papo UOL</title>
-
 </head>
 
 <body>
     <div class="top-bar">
         <img src="images/uol-chat-logo.jpg" class="chat-logo">
-        <ion-icon name="people" class="people"></ion-icon>
+        <ion-icon name="people" class="people" onclick="sideBar()"></ion-icon>
     </div>
 
     <main>
-
-
     </main>
 
-    <aside class="side-bar">
-
+    <aside class="side-bar hidden">
         <div class="side-bar-section">
 
-            <h1 class="options">Escolha um contato para enviar a mensagem:</h1>
+            <h1 class="options font-weight-700">Escolha um contato para enviar a mensagem:</h1>
 
             <div class="option">
                 <ion-icon name="people"></ion-icon>
@@ -49,50 +44,38 @@
                     <ion-icon name="checkmark" class="check"></ion-icon>           
                 </span>
             </div>
-
         </div>
 
         <div class="side-bar-section">
 
-            <h1 class="options">Escolha a visibilidade</h1>
+            <h1 class="options font-weight-700">Escolha a visibilidade</h1>
 
-            <div class="option">
+            <div class="option" onclick="choose(this)">
                 <ion-icon name="lock-open"></ion-icon>
                 <span class="option-name">
                     <p>Público</p>
                     <ion-icon name="checkmark" class="check"></ion-icon>           
                 </span>
             </div>
-            <div class="option">
+            <div class="option" onclick="choose(this)">
                 <ion-icon name="lock-closed"></ion-icon>
                 <span class="option-name">
                     <p>Reservadamente</p>
                     <ion-icon name="checkmark" class="check"></ion-icon>           
                 </span>
             </div>
-
-        </div>
-
-        
-        <!-- <div class="side-bar-section">
-            <h1 class="options">Escolha a visibilidade</h1>
-        </div> -->
-        
-
+        </div>       
     </aside>
+
+    <div class="blurred-background hidden" onclick="closeSideBar()"></div>
 
     <div class="bottom-bar">
         <input class="writing" type="text" placeholder="Escreva aqui...">
         <ion-icon name="paper-plane-outline" class="send-message" onclick="sendMessage()"></ion-icon>
     </div>
 
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="script.js"></script>
-    
-
 </body>
 </html>
