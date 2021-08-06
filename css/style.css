@@ -48,6 +48,7 @@ main {
     top: 0;
     z-index: 7;
     padding: 0 27px 35px 21px;
+    overflow-y: scroll;
 }
 
 .options {

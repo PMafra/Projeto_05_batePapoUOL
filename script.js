@@ -5,7 +5,7 @@ const SERVER_URL_MESSAGES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/
 let userName = "";
 
 function renderPage () {
-    const promiseMessages = axios.get(SERVER_URL_MESSAGES);
+    let promiseMessages = axios.get(SERVER_URL_MESSAGES);
     promiseMessages.then(processMessagesSucess);
     promiseMessages.catch(handleMessagesError);
 }
@@ -17,16 +17,36 @@ function processMessagesSucess (sucess) {
         
         if (sucess.data[i].type === "status"){
             allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p>${sucess.data[i].text}</p></div>`;
-            document.querySelector("main").lastElementChild.scrollIntoView();
+            allMessages.lastElementChild.scrollIntoView();
+            if (sucess.data[i].text === "entra na sala...") {
+                let addContact = document.querySelector(".side-bar .contacts");
+                let checkPerson = document.getElementById(`${sucess.data[i].from}`);
+                if (checkPerson === null) {
+                    addContact.innerHTML += 
+                    `<div class="option" onclick="selectContact(this)">
+                        <ion-icon name="person-circle"></ion-icon>
+                        <span class="option-name">
+                            <p id="${sucess.data[i].from}">${sucess.data[i].from}</p>
+                            <ion-icon name="checkmark" class="check"></ion-icon>           
+                        </span>
+                    </div>`;
+                }
+            }
+            if (sucess.data[i].text === "sai da sala...") {
+                let removeContact = document.getElementById(`${sucess.data[i].from}`);
+                if (removeContact !== null) {
+                    removeContact.parentElement.parentElement.outerHTML = "";
+                }
+            }
         }
         if (sucess.data[i].type === "message"){
             allMessages.innerHTML += `<div class="message-box normal-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
-            document.querySelector("main").lastElementChild.scrollIntoView();
+            allMessages.lastElementChild.scrollIntoView();
         }
         if (sucess.data[i].type === "private_message"){
             if (sucess.data[i].to === userName) {
                 allMessages.innerHTML += `<div class="message-box private-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> reservadamente para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
-                document.querySelector("main").lastElementChild.scrollIntoView();
+                allMessages.lastElementChild.scrollIntoView();
             }
             
         }
@@ -38,7 +58,7 @@ function handleMessagesError (error) {
 }
 
 renderPage()
-setInterval(renderPage, 3000);
+const rendering = setInterval(renderPage, 3000);
 
 function askUserName () {
     userName = prompt("Qual o seu nome?");
@@ -64,12 +84,11 @@ function checkUserName (data) {
 function processNameSucess (sucess) {
 
     alert("Seu nome foi cadastrado!");
-    //setInterval(userStatus, 5000, );
-
+    //const status = setInterval(userStatus, 5000);
+    return status;
 }
 
 function handleNameError (error) {
-    console.log(error);
     if (error.response.status === 400){
         alert("Já existe um usuário com esse nome!");
     } else {
@@ -81,9 +100,22 @@ function handleNameError (error) {
 
 function userStatus (data) {
 
-    const requestStatus = axios.post(SERVER_URL_STATUS, data);
-    requestStatus.then(function () {alert("voce se mantem conectado")});
-    requestStatus.catch(function () {alert("Você deixou a sala")});
+    let requestStatus = axios.post(SERVER_URL_STATUS, {name: userName});
+    requestStatus.then(keepConection);
+    requestStatus.catch(leaveRoom);
+}
+
+function keepConection (element) {
+    console.log(element);
+    console.log("voce se mantem conectado");
+}
+
+function leaveRoom (element) {
+    console.log(element);
+    alert("Você deixou a sala");
+    clearInterval(rendering);
+    clearInterval(status);
+    refreshPage();
 }
 
 
@@ -94,9 +126,10 @@ function sendMessage () {
     let text = document.querySelector(".writing").value;
     
     let objectMessage = {from, to, text, type: "message"};
-    const requestMessage = axios.post(SERVER_URL_MESSAGES, objectMessage);
+    let requestMessage = axios.post(SERVER_URL_MESSAGES, objectMessage);
     requestMessage.then(renderPage);
     requestMessage.catch(refreshPage);
+
     //document.querySelector("main").innerHTML += `<div>${text}</div>`
     //document.querySelector("main").lastElementChild.scrollIntoView();
     //let inputField = document.querySelector(".bottom-bar");
@@ -104,7 +137,7 @@ function sendMessage () {
 }
 
 function refreshPage () {
-    window.location.reload();
+    location.reload();
 }
 
 function sideBar () {
@@ -121,48 +154,25 @@ function closeSideBar () {
     blurredBackground.classList.add("hidden");
 }
 
-function choose (element) {
-    element.lastElementChild.lastElementChild.classList.add("visible");
+function selectContact (element) {
+    let checked = document.querySelector(".contacts .visible");
+    if (checked !== null) {
+        checked.classList.toggle("visible");
+    }
+    element.lastElementChild.lastElementChild.classList.toggle("visible");
 }
 
 
-/*  
-function orderData () {
-    const promise = axios.get(SERVER_URL);
-    console.log(promise);
-    promise.then(processOrderSucess);
-    promise.catch(handleOrderError);
+function selectVisibility (element) {
+    let checked = document.querySelector(".visibilities .visible");
+    if (checked !== null) {
+        checked.classList.toggle("visible");
+    }
+    element.lastElementChild.lastElementChild.classList.toggle("visible");
 }
 
-function processOrderSucess (sucess) {
-    console.log(sucess);
-    console.log(sucess.data);
-    console.log(sucess.status);
 
-}
 
-function handleOrderError (error) {
-    console.log("Status code: " + error.response.status); // Ex: 404
-	console.log("Mensagem de erro: " + error.response.data); // Ex: Not Found
-}
-*/
 
-/*
-function sendData () {
-    const data = {};
-    const requisition = axios.get(SERVER_URL, data);
-    console.log(requisition);
-    requisition.then(processRequisitionSucess);
-    requisition.catch(handleRequisitionError);
 
-}
 
-function processRequisitionSucess (sucess) {
-
-}
-
-function handleRequisitionError (error) {
-
-}
-
-*/

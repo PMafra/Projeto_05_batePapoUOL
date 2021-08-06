@@ -19,45 +19,50 @@
     </main>
 
     <aside class="side-bar hidden">
-        <div class="side-bar-section">
+
+
+        <div class="side-bar-section contacts">
 
             <h1 class="options font-weight-700">Escolha um contato para enviar a mensagem:</h1>
 
-            <div class="option">
+            <div class="option" onclick="selectContact(this)">
                 <ion-icon name="people"></ion-icon>
                 <span class="option-name">
                     <p class="all">Todos</p>
                     <ion-icon name="checkmark" class="check"></ion-icon>           
                 </span>
             </div>
-            <div class="option">
+
+            <!-- <div class="option" onclick="selectContact(this)">
                 <ion-icon name="person-circle"></ion-icon>
                 <span class="option-name">
                     <p>João</p>
                     <ion-icon name="checkmark" class="check"></ion-icon>           
                 </span>
             </div>
-            <div class="option">
+            <div class="option" onclick="selectContact(this)">
                 <ion-icon name="person-circle"></ion-icon>
                 <span class="option-name">
                     <p>Maria</p>
                     <ion-icon name="checkmark" class="check"></ion-icon>           
                 </span>
-            </div>
+            </div> -->
+
         </div>
 
-        <div class="side-bar-section">
+
+        <div class="side-bar-section visibilities">
 
             <h1 class="options font-weight-700">Escolha a visibilidade</h1>
 
-            <div class="option" onclick="choose(this)">
+            <div class="option" onclick="selectVisibility(this)">
                 <ion-icon name="lock-open"></ion-icon>
                 <span class="option-name">
                     <p>Público</p>
                     <ion-icon name="checkmark" class="check"></ion-icon>           
                 </span>
             </div>
-            <div class="option" onclick="choose(this)">
+            <div class="option" onclick="selectVisibility(this)">
                 <ion-icon name="lock-closed"></ion-icon>
                 <span class="option-name">
                     <p>Reservadamente</p>
@@ -65,6 +70,8 @@
                 </span>
             </div>
         </div>       
+
+
     </aside>
 
     <div class="blurred-background hidden" onclick="closeSideBar()"></div>
