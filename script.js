@@ -2,47 +2,7 @@ const SERVER_URL_NAMES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol
 const SERVER_URL_STATUS = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status"
 const SERVER_URL_MESSAGES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages"
 
-//sendUserName();
-renderPage()
-//setInterval(renderPage, 3000);
-
-function sendUserName () {
-
-    let name = prompt("Qual o seu nome?");
-    console.log(name)
-    while (name === "") {
-        name = prompt("Qual o seu nome?");
-    }
-    let userNameData = {name};
-    
-    let requestName = axios.post(SERVER_URL_NAMES, userNameData);
-    requestName.catch(handleNameError);
-    requestName.then(processNameSucess);
-    
-}
-
-function handleNameError (error) {
-
-    console.log(error);
-    if (error.response.status === 400){
-        alert("Já existe um usuário com esse nome!");
-    }
-    sendUserName();   
-}
-
-function processNameSucess (sucess) {
-    /*
-    alert("Seu nome foi cadastrado!");
-    setInterval(userStatus, 5000, userNameData);
-    */
-}
-
-function userStatus (name) {
-
-    const requestStatus = axios.post(SERVER_URL_STATUS, name);
-    requestStatus.catch(function () {alert("Você deixou a sala")});
-    requestStatus.then(function () {alert("voce se mantem conectado")});
-}
+let userName = "";
 
 function renderPage () {
     const promiseMessages = axios.get(SERVER_URL_MESSAGES);
@@ -64,8 +24,11 @@ function processMessagesSucess (sucess) {
             document.querySelector("main").lastElementChild.scrollIntoView();
         }
         if (sucess.data[i].type === "private_message"){
-            allMessages.innerHTML += `<div class="message-box private-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> reservadamente para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
-            document.querySelector("main").lastElementChild.scrollIntoView();
+            if (sucess.data[i].to === userName) {
+                allMessages.innerHTML += `<div class="message-box private-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> reservadamente para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
+                document.querySelector("main").lastElementChild.scrollIntoView();
+            }
+            
         }
     }
 }
@@ -74,21 +37,74 @@ function handleMessagesError (error) {
     console.log(error.response.status);
 }
 
+renderPage()
+setInterval(renderPage, 3000);
+
+function askUserName () {
+    userName = prompt("Qual o seu nome?");
+    while (userName === "") {
+        userName = prompt("Qual o seu nome?");
+    }
+
+    let userNameData = {name: userName};
+    checkUserName(userNameData);
+
+    return userName;
+}
+
+askUserName();
+
+function checkUserName (data) {
+    
+    let requestName = axios.post(SERVER_URL_NAMES, data);
+    requestName.then(processNameSucess);
+    requestName.catch(handleNameError);
+}
+
+function processNameSucess (sucess) {
+
+    alert("Seu nome foi cadastrado!");
+    //setInterval(userStatus, 5000, );
+
+}
+
+function handleNameError (error) {
+    console.log(error);
+    if (error.response.status === 400){
+        alert("Já existe um usuário com esse nome!");
+    } else {
+        alert("Deu ruim mas não sei porque!");
+    }
+    askUserName();
+}
+
+
+function userStatus (data) {
+
+    const requestStatus = axios.post(SERVER_URL_STATUS, data);
+    requestStatus.then(function () {alert("voce se mantem conectado")});
+    requestStatus.catch(function () {alert("Você deixou a sala")});
+}
+
 
 function sendMessage () {
 
+    let from = userName;
+    let to = document.querySelector(".all").innerHTML;
     let text = document.querySelector(".writing").value;
-    let to = document.querySelector(".").innerHTML;
-    let from = document.querySelector(".").innerHTML;
-
+    
     let objectMessage = {from, to, text, type: "message"};
     const requestMessage = axios.post(SERVER_URL_MESSAGES, objectMessage);
-
-    document.querySelector("main").innerHTML += `<div>${text}</div>`
-    document.querySelector("main").lastElementChild.scrollIntoView();
+    requestMessage.then(renderPage);
+    requestMessage.catch(refreshPage);
+    //document.querySelector("main").innerHTML += `<div>${text}</div>`
+    //document.querySelector("main").lastElementChild.scrollIntoView();
     //let inputField = document.querySelector(".bottom-bar");
     //inputField.firstElementChild.innerHTML = '<input class="writing" type="text" placeholder="Escreva aqui...">'
-    
+}
+
+function refreshPage () {
+    window.location.reload();
 }
 
 function sideBar () {
