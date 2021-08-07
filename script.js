@@ -23,7 +23,7 @@ function processMessagesSucess (sucess) {
                 let checkPerson = document.getElementById(`${sucess.data[i].from}`);
                 if (checkPerson === null) {
                     addContact.innerHTML += 
-                    `<div class="option" onclick="selectContact(this)">
+                    `<div class="option" onclick="select(this)">
                         <ion-icon name="person-circle"></ion-icon>
                         <span class="option-name">
                             <p id="${sucess.data[i].from}">${sucess.data[i].from}</p>
@@ -58,12 +58,11 @@ function handleMessagesError (error) {
 }
 
 renderPage()
-const rendering = setInterval(renderPage, 3000);
+//const rendering = setInterval(renderPage, 3000);
 
 function askUserName () {
-    userName = prompt("Qual o seu nome?");
     while (userName === "") {
-        userName = prompt("Qual o seu nome?");
+        userName = prompt("Qual o seu lindo nome?");
     }
 
     let userNameData = {name: userName};
@@ -73,6 +72,7 @@ function askUserName () {
 }
 
 askUserName();
+console.log(userName);
 
 function checkUserName (data) {
     
@@ -81,8 +81,7 @@ function checkUserName (data) {
     requestName.catch(handleNameError);
 }
 
-function processNameSucess (sucess) {
-
+function processNameSucess () {
     alert("Seu nome foi cadastrado!");
     //const status = setInterval(userStatus, 5000);
     return status;
@@ -97,27 +96,27 @@ function handleNameError (error) {
     askUserName();
 }
 
-
-function userStatus (data) {
+function userStatus () {
 
     let requestStatus = axios.post(SERVER_URL_STATUS, {name: userName});
-    requestStatus.then(keepConection);
-    requestStatus.catch(leaveRoom);
+    requestStatus.then(stillConected);
+    requestStatus.catch(leftRoom);
 }
 
-function keepConection (element) {
-    console.log(element);
-    console.log("voce se mantem conectado");
+function stillConected () {
+    console.log("você se mantem conectado");
 }
 
-function leaveRoom (element) {
-    console.log(element);
+function leftRoom () {
     alert("Você deixou a sala");
     clearInterval(rendering);
     clearInterval(status);
     refreshPage();
 }
 
+function refreshPage () {
+    location.reload();
+}
 
 function sendMessage () {
 
@@ -136,40 +135,28 @@ function sendMessage () {
     //inputField.firstElementChild.innerHTML = '<input class="writing" type="text" placeholder="Escreva aqui...">'
 }
 
-function refreshPage () {
-    location.reload();
-}
-
 function sideBar () {
     const sideBar = document.querySelector(".side-bar");
-    sideBar.classList.remove("hidden");
+    sideBar.classList.toggle("hidden");
     const blurredBackground = document.querySelector(".blurred-background");
-    blurredBackground.classList.remove("hidden");
+    blurredBackground.classList.toggle("hidden");
 }
 
-function closeSideBar () {
-    const sideBar = document.querySelector(".side-bar");
-    sideBar.classList.add("hidden");
-    const blurredBackground = document.querySelector(".blurred-background");
-    blurredBackground.classList.add("hidden");
-}
+let checked;
+function select (element) {
+    if (element.parentElement.classList.contains("visibilities")){
+        checked = document.querySelector(".visibilities .visible");
+    };
+    if (element.parentElement.classList.contains("contacts")){
+        checked = document.querySelector(".contacts .visible");
+    };
 
-function selectContact (element) {
-    let checked = document.querySelector(".contacts .visible");
     if (checked !== null) {
         checked.classList.toggle("visible");
     }
     element.lastElementChild.lastElementChild.classList.toggle("visible");
 }
 
-
-function selectVisibility (element) {
-    let checked = document.querySelector(".visibilities .visible");
-    if (checked !== null) {
-        checked.classList.toggle("visible");
-    }
-    element.lastElementChild.lastElementChild.classList.toggle("visible");
-}
 
 
 
