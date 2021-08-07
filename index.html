@@ -62,8 +62,10 @@
     <div class="blurred-background hidden" onclick="sideBar()"></div>
 
     <div class="bottom-bar">
-        <input class="writing" type="text" placeholder="Escreva aqui...">
-        <ion-icon name="paper-plane-outline" class="send-message" onclick="sendMessage()"></ion-icon>
+        <div class="send-container">
+            <input class="writing" type="text" placeholder="Escreva aqui...">
+            <ion-icon name="paper-plane-outline" class="send-message" onclick="sendMessage()"></ion-icon>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

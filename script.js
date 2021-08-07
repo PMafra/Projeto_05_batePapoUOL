@@ -18,6 +18,8 @@ function processMessagesSucess (sucess) {
         if (sucess.data[i].type === "status"){
             allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p>${sucess.data[i].text}</p></div>`;
             allMessages.lastElementChild.scrollIntoView();
+            listOnlineUsers (sucess.data[i].text, sucess.data[i].from);
+            /*
             if (sucess.data[i].text === "entra na sala...") {
                 let addContact = document.querySelector(".side-bar .contacts");
                 let checkPerson = document.getElementById(`${sucess.data[i].from}`);
@@ -38,26 +40,51 @@ function processMessagesSucess (sucess) {
                     removeContact.parentElement.parentElement.outerHTML = "";
                 }
             }
+            */
         }
         if (sucess.data[i].type === "message"){
             allMessages.innerHTML += `<div class="message-box normal-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
             allMessages.lastElementChild.scrollIntoView();
         }
         if (sucess.data[i].type === "private_message"){
-            if (sucess.data[i].to === userName) {
+            //if (sucess.data[i].to === userName) {
                 allMessages.innerHTML += `<div class="message-box private-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> reservadamente para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
                 allMessages.lastElementChild.scrollIntoView();
-            }
+            //}
             
         }
     }
 }
 
-function handleMessagesError (error) {
-    console.log(error.response.status);
+function listOnlineUsers (text, from) {
+
+    if (text === "entra na sala...") {
+        let addContact = document.querySelector(".side-bar .contacts");
+        let checkPerson = document.getElementById(`${from}`);
+        if (checkPerson === null) {
+            addContact.innerHTML += 
+            `<div class="option" onclick="select(this)">
+                <ion-icon name="person-circle"></ion-icon>
+                <span class="option-name">
+                    <p id="${from}">${from}</p>
+                    <ion-icon name="checkmark" class="check"></ion-icon>           
+                </span>
+            </div>`;
+        }
+    }
+    if (text === "sai da sala...") {
+        let removeContact = document.getElementById(`${from}`);
+        if (removeContact !== null) {
+            removeContact.parentElement.parentElement.outerHTML = "";
+        }
+    }
 }
 
-renderPage()
+function handleMessagesError () {
+    alert("Mensagem não enviada, tente novamente!");
+}
+
+//renderPage()
 //const rendering = setInterval(renderPage, 3000);
 
 function askUserName () {
@@ -118,23 +145,6 @@ function refreshPage () {
     location.reload();
 }
 
-function sendMessage () {
-
-    let from = userName;
-    let to = document.querySelector(".all").innerHTML;
-    let text = document.querySelector(".writing").value;
-    
-    let objectMessage = {from, to, text, type: "message"};
-    let requestMessage = axios.post(SERVER_URL_MESSAGES, objectMessage);
-    requestMessage.then(renderPage);
-    requestMessage.catch(refreshPage);
-
-    //document.querySelector("main").innerHTML += `<div>${text}</div>`
-    //document.querySelector("main").lastElementChild.scrollIntoView();
-    //let inputField = document.querySelector(".bottom-bar");
-    //inputField.firstElementChild.innerHTML = '<input class="writing" type="text" placeholder="Escreva aqui...">'
-}
-
 function sideBar () {
     const sideBar = document.querySelector(".side-bar");
     sideBar.classList.toggle("hidden");
@@ -155,7 +165,52 @@ function select (element) {
         checked.classList.toggle("visible");
     }
     element.lastElementChild.lastElementChild.classList.toggle("visible");
+
+    appearReceiverName();
 }
+
+function appearReceiverName () {
+    let receiverName = document.querySelector(".contacts .visible").previousElementSibling.innerHTML;
+    let bottomBar = document.querySelector(".bottom-bar");
+    let bottomBarComment = document.querySelector(".bottom-bar .receiver");
+    if (receiverName !== "Todos") {
+        if (bottomBarComment === null) {
+            bottomBar.innerHTML += `<p class="receiver">Enviando para ${receiverName} (reservadamente)</p>`;
+        } else {
+            bottomBarComment.innerText = `Enviando para ${receiverName} (reservadamente)`;
+        } 
+    } else {
+        if (bottomBarComment !== null) {
+            bottomBarComment.remove();
+        }
+    }
+}
+
+let to;
+function sendMessage () {
+
+    let messageVisibility = document.querySelector(".visibilities .visible").previousElementSibling;
+    let from = userName;
+    let text = document.querySelector(".writing").value;
+    if (messageVisibility.innerText === "Público") {
+        to = document.querySelector(".all").innerHTML;
+        let objectMessage = {from, to, text, type: "message"};
+        let requestMessage = axios.post(SERVER_URL_MESSAGES, objectMessage);
+        requestMessage.then(renderPage);
+        requestMessage.catch(refreshPage);
+    }
+    if (messageVisibility.innerText === "Reservadamente") {
+        to = document.querySelector(".contacts .visible").previousElementSibling.innerHTML;
+        let objectMessage = {from, to, text, type: "private_message"};
+        let requestMessage = axios.post(SERVER_URL_MESSAGES, objectMessage);
+        requestMessage.then(renderPage);
+        requestMessage.catch(refreshPage);
+    }
+}
+
+
+
+
 
 
 

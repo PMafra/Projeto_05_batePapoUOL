@@ -106,15 +106,20 @@ main {
     height: 80px;
     width: 100vw;
     background-color: #ffffff;
-    display: flex;
-    align-items: center;
     justify-content: space-between;
     position: fixed;
     bottom: 0;
     left: 0;
     box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
-    padding: 0 27px 0 17px;
+    padding: 18px 27px 14px 17px;
     z-index: 5;
+    display: flex;
+    flex-direction: column;
+}
+
+.send-container {
+    display: flex;
+    align-items: center;
 }
 
 .writing {
@@ -132,16 +137,21 @@ main {
 }
 
 .send-message {
-    font-size: 26px;
+    font-size: 35px;
     cursor: pointer;
 }
 
+.receiver {
+    font-size: 14px;
+    font-weight: 300;
+    color: #505050;
+    margin-left: 3px;
+}   
+
 .message-box {
     display: flex;
-    /* align-items: center; */
     font-size: 14px;
     padding: 15px 9px;
-    background-color: blanchedalmond;
     margin-top: 4px;
 }
 
