@@ -93,14 +93,15 @@ function handleMessagesError () {
 // PERGUNTAR E CHECAR NOME DO USUÁRIO
 
 function askUserName () {
-    while (userName === "") {
-        userName = prompt("Qual o seu lindo nome?");
+
+    userName = document.getElementById("userNameInput").value;
+    if (userName.length < 3 || userName.length > 13) {
+        alert("Seu nome deve entre 3 e 13 caracteres!");
+    } else if (userName !== "") {
+        let userNameData = {name: userName};
+        checkUserName(userNameData);
+        return userName;
     }
-
-    let userNameData = {name: userName};
-    checkUserName(userNameData);
-
-    return userName;
 }
 
 //askUserName();
@@ -114,6 +115,8 @@ function checkUserName (data) {
 
 function processNameSucess () {
     alert("Seu nome foi cadastrado!");
+    let entryPage = document.querySelector(".entry-page");
+    entryPage.classList.add("hidden");
     //const status = setInterval(userStatus, 5000);
     return status;
 }
@@ -124,7 +127,6 @@ function handleNameError (error) {
     } else {
         alert("Deu ruim mas não sei porque!");
     }
-    askUserName();
 }
 
 // VERIFICAR STATUS DO USUÁRIO
@@ -231,7 +233,7 @@ function sendMessageWithEnter (inputTag) {
             if (event.target.id === "messagesInput") {
                 sendMessage();
             } else if (event.target.id === "userNameInput") {
-                alert("oiii");
+                askUserName();
             }
         }
     });
