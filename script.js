@@ -18,7 +18,7 @@ function processMessagesSucess (sucess) {
     for (let i = 0; i < sucess.data.length; i++) {
         
         if (sucess.data[i].type === "status"){
-            allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p>${sucess.data[i].text}</p></div>`;
+            allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p class="wrapping-word">${sucess.data[i].text}</p></div>`;
             allMessages.lastElementChild.scrollIntoView();
             listOnlineUsers (sucess.data[i].text, sucess.data[i].from);
             /*
@@ -45,12 +45,12 @@ function processMessagesSucess (sucess) {
             */
         }
         if (sucess.data[i].type === "message"){
-            allMessages.innerHTML += `<div class="message-box normal-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
+            allMessages.innerHTML += `<div class="message-box normal-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p class="wrapping-word">${sucess.data[i].text}</p></div>`;
             allMessages.lastElementChild.scrollIntoView();
         }
         if (sucess.data[i].type === "private_message"){
             if (sucess.data[i].from === userName || sucess.data[i].to === userName) {
-                allMessages.innerHTML += `<div class="message-box private-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> reservadamente para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
+                allMessages.innerHTML += `<div class="message-box private-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> reservadamente para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p class="wrapping-word">${sucess.data[i].text}</p></div>`;
                 allMessages.lastElementChild.scrollIntoView();
             } 
         }
