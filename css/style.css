@@ -196,12 +196,14 @@ main {
 .message-box {
     display: flex;
     font-size: 14px;
-    padding: 15px 9px;
+    padding: 15px 9px 10px 9px;
     margin-top: 4px;
+    flex-wrap: wrap;
 }
 
 .message-box * {
     margin-right: 5px;
+    margin-bottom: 5px;
 }
 
 time {
