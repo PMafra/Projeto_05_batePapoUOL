@@ -7,6 +7,50 @@ body {
     box-sizing: border-box;
 }
 
+.entry-page {
+    position: fixed;
+    background-color: #ffffff;
+    height: 100vh;
+    width: 100vw;
+    z-index: 8;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.entry-logo {
+    width: 150px;
+    margin: 95px auto 0px auto;
+}
+
+#userNameInput {
+    margin: 74px auto 0px auto;
+    width: 261px;
+    height: 54px;
+    border: 2px solid #D7D7D7;
+    border-radius: 5px;
+    outline: none;
+    padding: 0px auto;
+    text-align: center;
+    font-size: 18px;
+}
+
+#userNameInput::placeholder {
+    color: rgba(174, 174, 174);
+}
+
+.log-in {
+    margin: 20px auto 0px auto;
+    width: 109px;
+    height: 45px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    background-color: #E7E7E7;
+    color: #696969;
+}
+
 .top-bar {
     height: 80px;
     width: 100vw;

@@ -103,7 +103,7 @@ function askUserName () {
     return userName;
 }
 
-askUserName();
+//askUserName();
 
 function checkUserName (data) {
     
@@ -220,7 +220,7 @@ function sendMessage () {
         requestMessage.then(renderPage);
         requestMessage.catch(refreshPage);
     }
-    document.getElementById("clearingInput").value = "";
+    document.getElementById("messagesInput").value = "";
 }
 
 //ENVIAR MENSAGEM COM ENTER
@@ -228,8 +228,11 @@ function sendMessage () {
 function sendMessageWithEnter (inputTag) {
     inputTag.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
-            sendMessage();
-            alert("mensagem enviada");
+            if (event.target.id === "messagesInput") {
+                sendMessage();
+            } else if (event.target.id === "userNameInput") {
+                alert("oiii");
+            }
         }
     });
 }
