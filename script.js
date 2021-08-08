@@ -4,6 +4,8 @@ const SERVER_URL_MESSAGES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/
 
 let userName = "";
 
+// RENDERIZAR PÁGINA
+
 function renderPage () {
     let promiseMessages = axios.get(SERVER_URL_MESSAGES);
     promiseMessages.then(processMessagesSucess);
@@ -47,14 +49,15 @@ function processMessagesSucess (sucess) {
             allMessages.lastElementChild.scrollIntoView();
         }
         if (sucess.data[i].type === "private_message"){
-            //if (sucess.data[i].to === userName) {
+            if (sucess.data[i].from === userName || sucess.data[i].to === userName) {
                 allMessages.innerHTML += `<div class="message-box private-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> reservadamente para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p>${sucess.data[i].text}</p></div>`;
                 allMessages.lastElementChild.scrollIntoView();
-            //}
-            
+            } 
         }
     }
 }
+
+// LISTAR USUÁRIOS ONLINE NA ABA LATERAL
 
 function listOnlineUsers (text, from) {
 
@@ -81,11 +84,13 @@ function listOnlineUsers (text, from) {
 }
 
 function handleMessagesError () {
-    alert("Mensagem não enviada, tente novamente!");
+    alert("Algo deu errado!");
 }
 
 //renderPage()
 //const rendering = setInterval(renderPage, 3000);
+
+// PERGUNTAR E CHECAR NOME DO USUÁRIO
 
 function askUserName () {
     while (userName === "") {
@@ -123,6 +128,8 @@ function handleNameError (error) {
     askUserName();
 }
 
+// VERIFICAR STATUS DO USUÁRIO
+
 function userStatus () {
 
     let requestStatus = axios.post(SERVER_URL_STATUS, {name: userName});
@@ -141,9 +148,13 @@ function leftRoom () {
     refreshPage();
 }
 
+// ATUALIZAR PÁGINA
+
 function refreshPage () {
     location.reload();
 }
+
+// FAZER APARECER A SIDE BAR E SELECIONAR ITENS
 
 function sideBar () {
     const sideBar = document.querySelector(".side-bar");
@@ -169,6 +180,8 @@ function select (element) {
     appearReceiverName();
 }
 
+// INDICAÇÃO DO DESTINATÁRIO - ABAIXO DO INPUT
+
 function appearReceiverName () {
     let receiverName = document.querySelector(".contacts .visible").previousElementSibling.innerHTML;
     let bottomBar = document.querySelector(".bottom-bar");
@@ -185,6 +198,8 @@ function appearReceiverName () {
         }
     }
 }
+
+// ENVIAR MENSAGEM
 
 let to;
 function sendMessage () {
@@ -206,6 +221,7 @@ function sendMessage () {
         requestMessage.then(renderPage);
         requestMessage.catch(refreshPage);
     }
+    document.getElementById("clearingInput").value = "";
 }
 
 
