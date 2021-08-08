@@ -104,7 +104,6 @@ function askUserName () {
 }
 
 askUserName();
-console.log(userName);
 
 function checkUserName (data) {
     
@@ -223,6 +222,19 @@ function sendMessage () {
     }
     document.getElementById("clearingInput").value = "";
 }
+
+//ENVIAR MENSAGEM COM ENTER
+
+function sendMessageWithEnter (inputTag) {
+    inputTag.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            sendMessage();
+            alert("mensagem enviada");
+        }
+    });
+}
+
+
 
 
 
