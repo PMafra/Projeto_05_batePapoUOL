@@ -96,6 +96,10 @@ main {
     overflow-y: scroll;
 }
 
+.side-bar-icons {
+    font-size: 24px;
+}
+
 .options {
     text-align: center;
     margin-top: 35px;
@@ -118,15 +122,22 @@ main {
 
 .option-name {
     display: flex;
+    align-items: center;
+    width: 163px;
+    position: relative;
 }
 
 .option-name p {
-    width: 170px;
+    width: calc(100% - 26px);
+    overflow-wrap: break-word;
 }
 
 .check {
     color: #28BB25;
     opacity: 0;
+    position: absolute;
+    right: 0;
+    font-size: 23px;
 }
 
 .hidden {
@@ -221,3 +232,4 @@ time {
 .private-message {
     background-color: #FFDEDE;
 }
+

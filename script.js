@@ -31,7 +31,7 @@ function processMessagesSucess (sucess) {
                         <ion-icon name="person-circle"></ion-icon>
                         <span class="option-name">
                             <p id="${sucess.data[i].from}">${sucess.data[i].from}</p>
-                            <ion-icon name="checkmark" class="check"></ion-icon>           
+                            <ion-icon name="checkmark-sharp"" class="check"></ion-icon>           
                         </span>
                     </div>`;
                 }
@@ -67,10 +67,10 @@ function listOnlineUsers (text, from) {
         if (checkPerson === null) {
             addContact.innerHTML += 
             `<div class="option" onclick="select(this)">
-                <ion-icon name="person-circle"></ion-icon>
+                <ion-icon name="person-circle" class="side-bar-icons"></ion-icon>
                 <span class="option-name">
                     <p id="${from}">${from}</p>
-                    <ion-icon name="checkmark" class="check"></ion-icon>           
+                    <ion-icon name="checkmark-sharp"" class="check"></ion-icon>           
                 </span>
             </div>`;
         }
@@ -103,8 +103,6 @@ function askUserName () {
         return userName;
     }
 }
-
-//askUserName();
 
 function checkUserName (data) {
     
