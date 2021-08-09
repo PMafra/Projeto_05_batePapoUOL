@@ -6,7 +6,6 @@ let userName = "";
 let onlineUsers;
 
 // RENDERIZAR PÁGINA
-
 function renderPage () {
     let promiseMessages = axios.get(SERVER_URL_MESSAGES);
     promiseMessages.then(processMessagesSucess);
@@ -14,38 +13,11 @@ function renderPage () {
 }
 
 function processMessagesSucess (sucess) {
-
     let allMessages = document.querySelector("main");
-    for (let i = 0; i < sucess.data.length; i++) {
-        
+    for (let i = 0; i < sucess.data.length; i++) {      
         if (sucess.data[i].type === "status"){
             allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p class="wrapping-word">${sucess.data[i].text}</p></div>`;
             allMessages.lastElementChild.scrollIntoView();
-
-            //listOnlineUsers(sucess.data[i].text, sucess.data[i].from);
-            
-            /*
-            if (sucess.data[i].text === "entra na sala...") {
-                let addContact = document.querySelector(".side-bar .contacts");
-                let checkPerson = document.getElementById(`${sucess.data[i].from}`);
-                if (checkPerson === null) {
-                    addContact.innerHTML += 
-                    `<div class="option" onclick="select(this)">
-                        <ion-icon name="person-circle"></ion-icon>
-                        <span class="option-name">
-                            <p id="${sucess.data[i].from}">${sucess.data[i].from}</p>
-                            <ion-icon name="checkmark-sharp"" class="check"></ion-icon>           
-                        </span>
-                    </div>`;
-                }
-            }
-            if (sucess.data[i].text === "sai da sala...") {
-                let removeContact = document.getElementById(`${sucess.data[i].from}`);
-                if (removeContact !== null) {
-                    removeContact.parentElement.parentElement.outerHTML = "";
-                }
-            }
-            */
         }
         if (sucess.data[i].type === "message"){
             allMessages.innerHTML += `<div class="message-box normal-message"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p> para </p><strong class="font-weight-700">${sucess.data[i].to}:</strong><p class="wrapping-word">${sucess.data[i].text}</p></div>`;
@@ -61,7 +33,6 @@ function processMessagesSucess (sucess) {
 }
 
 // LISTAR USUÁRIOS NA ABA LATERAL
-
 function getOnlineUsers () {
     let allNamesPromise = axios.get(SERVER_URL_NAMES);
     allNamesPromise.then(listOnlineNames);
@@ -101,7 +72,6 @@ function listOnlineNames (allNames) {
                     <ion-icon name="checkmark" class="check"></ion-icon>           
                 </span>
             </div>`;
-
         let elementId = checkedPerson.previousElementSibling.id
         for (let i = 0; i < allNames.data.length; i++) {
             if (allNames.data[i].name === elementId) {
@@ -124,9 +94,7 @@ function listOnlineNames (allNames) {
                 </div>`;
             }
         } 
-
     }
-
     let receiverLeft = document.querySelector(".side-bar .contacts .visible");
     if (receiverLeft === null) {
         alert("Seu destinatário saiu da sala, selecione outro!");
@@ -136,40 +104,12 @@ function listOnlineNames (allNames) {
     }
 }
 
-// LISTAR USUÁRIOS ONLINE NA ABA LATERAL (atualização em tempo real com a renderização da página)
-/*
-function listOnlineUsers (text, from) {
-
-    if (text === "entra na sala...") {
-        let addContact = document.querySelector(".side-bar .contacts");
-        let checkPerson = document.getElementById(`${from}`);
-        if (checkPerson === null) {
-            addContact.innerHTML += 
-            `<div class="option" onclick="select(this)">
-                <ion-icon name="person-circle" class="side-bar-icons"></ion-icon>
-                <span class="option-name">
-                    <p id="${from}">${from}</p>
-                    <ion-icon name="checkmark-sharp"" class="check"></ion-icon>           
-                </span>
-            </div>`;
-        }
-    }
-    if (text === "sai da sala...") {
-        let removeContact = document.getElementById(`${from}`);
-        if (removeContact !== null) {
-            removeContact.parentElement.parentElement.outerHTML = "";
-        }
-    }
-}
-*/
 function handleMessagesError () {
     alert("Algo deu errado!");
 }
 
 // PERGUNTAR E CHECAR NOME DO USUÁRIO
-
 function askUserName () {
-
     userName = document.getElementById("userNameInput").value;
     if (userName.length < 3 || userName.length > 120000) {
         alert("Seu nome deve entre 3 e 13 caracteres!");
@@ -180,8 +120,7 @@ function askUserName () {
     }
 }
 
-function checkUserName (data) {
-    
+function checkUserName (data) {   
     let requestName = axios.post(SERVER_URL_NAMES, data);
     requestName.then(processNameSucess);
     requestName.catch(handleNameError);
@@ -194,10 +133,9 @@ function processNameSucess () {
     renderPage();
     getOnlineUsers();
     document.getElementById("public").nextElementSibling.classList.add("visible");
-    //const rendering = setInterval(renderPage, 3000);
+    const rendering = setInterval(renderPage, 3000);
     const status = setInterval(userStatus, 5000);
-    
-    const onlineList = setInterval(getOnlineUsers, 2000);
+    const onlinePeople = setInterval(getOnlineUsers, 10000);
     return status;
 }
 
@@ -210,9 +148,7 @@ function handleNameError (error) {
 }
 
 // VERIFICAR STATUS DO USUÁRIO
-
 function userStatus () {
-
     let requestStatus = axios.post(SERVER_URL_STATUS, {name: userName});
     requestStatus.then(stillConected);
     requestStatus.catch(leftRoom);
@@ -226,18 +162,16 @@ function leftRoom () {
     alert("Você deixou a sala");
     clearInterval(rendering);
     clearInterval(status);
-    clearInterval(onlineList);
+    clearInterval(onlinePeople);
     refreshPage();
 }
 
 // ATUALIZAR PÁGINA
-
 function refreshPage () {
     location.reload();
 }
 
 // FAZER APARECER A SIDE BAR E SELECIONAR ITENS
-
 function sideBar () {
     const sideBar = document.querySelector(".side-bar");
     sideBar.classList.toggle("hidden");
@@ -297,7 +231,6 @@ function autoSelectContact () {
 }
 
 // INDICAÇÃO DO DESTINATÁRIO - ABAIXO DO INPUT
-
 function appearReceiverName () {
     let receiverName = document.querySelector(".contacts .visible").previousElementSibling.innerHTML;
     let bottomBar = document.querySelector(".bottom-bar");
@@ -316,10 +249,8 @@ function appearReceiverName () {
 }
 
 // ENVIAR MENSAGEM
-
 let to;
 function sendMessage () {
-
     let messageVisibility = document.querySelector(".visibilities .visible").previousElementSibling;
     let from = userName;
     let text = document.querySelector(".writing").value;
@@ -341,7 +272,6 @@ function sendMessage () {
 }
 
 //ENVIAR MENSAGEM COM ENTER
-
 function sendMessageWithEnter (inputTag) {
     inputTag.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
@@ -353,42 +283,3 @@ function sendMessageWithEnter (inputTag) {
         }
     });
 }
-
-
-// TEZTANOOOOOO
-
-
-
-/*
-function listOnlineUsers (text, from) {
-
-    if (text === "entra na sala...") {
-        let addContact = document.querySelector(".side-bar .contacts");
-        let checkPerson = document.getElementById(`${from}`);
-        if (checkPerson === null) {
-            addContact.innerHTML += 
-            `<div class="option" onclick="select(this)">
-                <ion-icon name="person-circle" class="side-bar-icons"></ion-icon>
-                <span class="option-name">
-                    <p id="${from}">${from}</p>
-                    <ion-icon name="checkmark-sharp"" class="check"></ion-icon>           
-                </span>
-            </div>`;
-        }
-    }
-    if (text === "sai da sala...") {
-        let removeContact = document.getElementById(`${from}`);
-        if (removeContact !== null) {
-            removeContact.parentElement.parentElement.outerHTML = "";
-        }
-    }
-}
-
-*/
-
-
-
-
-
-
-
