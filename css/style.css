@@ -70,6 +70,7 @@ body {
 .chat-logo {
     height: 50px;
     margin-top: 5px;
+    cursor: pointer;
 }
 
 .people {
@@ -183,7 +184,8 @@ main {
 
 .writing {
     height: 30px;
-    width: 550px;
+    width: calc(100% - 150px);
+    min-width: 125px;
     border: none;
     outline: none;
     font-size: 18px;
@@ -196,8 +198,10 @@ main {
 }
 
 .send-message {
-    font-size: 42px;
+    font-size: 40px;
+    min-width: 35px;
     cursor: pointer;
+    margin-top: -5px;
 }
 
 .receiver {
@@ -211,7 +215,7 @@ main {
 }   
 
 #NM {
-    max-width: 95px;
+    min-width: 8px;
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
