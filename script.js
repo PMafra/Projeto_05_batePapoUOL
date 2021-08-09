@@ -111,8 +111,8 @@ function handleMessagesError () {
 // PERGUNTAR E CHECAR NOME DO USUÁRIO
 function askUserName () {
     userName = document.getElementById("userNameInput").value;
-    if (userName.length < 3 || userName.length > 120000) {
-        alert("Seu nome deve entre 3 e 13 caracteres!");
+    if (userName.length < 3 || userName.length > 15) {
+        alert("Seu nome deve ter entre 3 e 15 caracteres!");
     } else if (userName !== "") {
         let userNameData = {name: userName};
         checkUserName(userNameData);
@@ -222,7 +222,7 @@ function autoSelectContact () {
         document.querySelector(".all").nextElementSibling.classList.add("visible");
         document.querySelector(".bottom-bar .receiver").innerHTML = "";
         } else {
-            alert("você não pode enviar mensagens reservadas a Todos! Selecione um contato.");
+            alert("Você não pode enviar mensagens reservadas a Todos! Selecione um destinatário.");
             document.getElementById("secret").nextElementSibling.classList.remove("visible");
             document.getElementById("public").nextElementSibling.classList.add("visible");
             document.querySelector(".all").nextElementSibling.classList.add("visible");
