@@ -3,6 +3,7 @@ const SERVER_URL_STATUS = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uo
 const SERVER_URL_MESSAGES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages"
 
 let userName = "";
+let onlineUsers;
 
 // RENDERIZAR PÁGINA
 
@@ -20,7 +21,9 @@ function processMessagesSucess (sucess) {
         if (sucess.data[i].type === "status"){
             allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p class="wrapping-word">${sucess.data[i].text}</p></div>`;
             allMessages.lastElementChild.scrollIntoView();
-            listOnlineUsers (sucess.data[i].text, sucess.data[i].from);
+
+            listOnlineUsers(sucess.data[i].text, sucess.data[i].from);
+            
             /*
             if (sucess.data[i].text === "entra na sala...") {
                 let addContact = document.querySelector(".side-bar .contacts");
@@ -87,15 +90,12 @@ function handleMessagesError () {
     alert("Algo deu errado!");
 }
 
-//renderPage()
-//const rendering = setInterval(renderPage, 3000);
-
 // PERGUNTAR E CHECAR NOME DO USUÁRIO
 
 function askUserName () {
 
     userName = document.getElementById("userNameInput").value;
-    if (userName.length < 3 || userName.length > 13) {
+    if (userName.length < 3 || userName.length > 120000) {
         alert("Seu nome deve entre 3 e 13 caracteres!");
     } else if (userName !== "") {
         let userNameData = {name: userName};
@@ -115,7 +115,11 @@ function processNameSucess () {
     alert("Seu nome foi cadastrado!");
     let entryPage = document.querySelector(".entry-page");
     entryPage.classList.add("hidden");
-    //const status = setInterval(userStatus, 5000);
+    renderPage();
+    document.querySelector(".option .all").nextElementSibling.classList.add("visible");
+    document.getElementById("public").nextElementSibling.classList.add("visible");
+    //const rendering = setInterval(renderPage, 3000);
+    const status = setInterval(userStatus, 5000);
     return status;
 }
 
@@ -177,6 +181,37 @@ function select (element) {
     element.lastElementChild.lastElementChild.classList.toggle("visible");
 
     appearReceiverName();
+
+    if (element.parentElement.classList.contains("visibilities")) {
+        autoSelectContact();
+    } else {
+        autoSelectVisibility();
+    }
+}
+
+function autoSelectVisibility () {
+    let contactChecked = document.querySelector(".contacts .visible");
+    if (contactChecked !== null) {
+        document.querySelector(".visibilities .visible").classList.remove("visible");
+        if (contactChecked.previousElementSibling.innerText === "Todos") {
+        document.getElementById("public").nextElementSibling.classList.add("visible");
+        } else {
+            document.getElementById("secret").nextElementSibling.classList.add("visible");
+        }
+    }
+}
+
+function autoSelectContact () {
+    let visibilityChecked = document.querySelector(".visibilities .visible");
+    if (visibilityChecked !== null) {
+        document.querySelector(".contacts .visible").classList.remove("visible");
+        if (visibilityChecked.previousElementSibling.innerText === "Público") {
+        document.querySelector(".all").nextElementSibling.classList.add("visible");
+        document.querySelector(".bottom-bar .receiver").innerHTML = "";
+        } else {
+            alert("você não pode enviar mensagens reservadas a Todos! Selecione um contato.");
+        }
+    }
 }
 
 // INDICAÇÃO DO DESTINATÁRIO - ABAIXO DO INPUT
@@ -187,9 +222,9 @@ function appearReceiverName () {
     let bottomBarComment = document.querySelector(".bottom-bar .receiver");
     if (receiverName !== "Todos") {
         if (bottomBarComment === null) {
-            bottomBar.innerHTML += `<p class="receiver">Enviando para ${receiverName} (reservadamente)</p>`;
+            bottomBar.innerHTML += `<p class="receiver">Enviando para <object id="NM">${receiverName}</object> (reservadamente)</p>`;
         } else {
-            bottomBarComment.innerText = `Enviando para ${receiverName} (reservadamente)`;
+            bottomBarComment.innerHTML = `Enviando para <object id="NM">${receiverName}</object> (reservadamente)`;
         } 
     } else {
         if (bottomBarComment !== null) {

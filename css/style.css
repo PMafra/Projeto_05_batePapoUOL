@@ -175,7 +175,9 @@ main {
 
 .send-container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    background-color: #ffffff;
 }
 
 .writing {
@@ -193,16 +195,28 @@ main {
 }
 
 .send-message {
-    font-size: 35px;
+    font-size: 30px;
     cursor: pointer;
 }
 
 .receiver {
+    line-height: 20px;
     font-size: 14px;
     font-weight: 300;
     color: #505050;
     margin-left: 3px;
+    display: flex;
+    white-space: nowrap;
 }   
+
+#NM {
+    max-width: 95px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 5px;
+}
 
 .message-box {
     display: flex;
