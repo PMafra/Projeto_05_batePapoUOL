@@ -22,7 +22,7 @@ function processMessagesSucess (sucess) {
             allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p class="wrapping-word">${sucess.data[i].text}</p></div>`;
             allMessages.lastElementChild.scrollIntoView();
 
-            listOnlineUsers(sucess.data[i].text, sucess.data[i].from);
+            //listOnlineUsers(sucess.data[i].text, sucess.data[i].from);
             
             /*
             if (sucess.data[i].text === "entra na sala...") {
@@ -60,8 +60,78 @@ function processMessagesSucess (sucess) {
     }
 }
 
-// LISTAR USUÁRIOS ONLINE NA ABA LATERAL
+// LISTAR USUÁRIOS NA ABA LATERAL
 
+function getOnlineUsers () {
+    let allNamesPromise = axios.get(SERVER_URL_NAMES);
+    allNamesPromise.then(listOnlineNames);
+    allNamesPromise.catch(function(){alert("Deu ruim!");});
+}
+
+function listOnlineNames (allNames) {
+    let checkedPerson = document.querySelector(".contacts .visible");
+    let addContact = document.querySelector(".side-bar .contacts");
+    if (checkedPerson === null || checkedPerson.previousElementSibling.innerHTML === "Todos") {
+        addContact.innerHTML = 
+            `<h1 class="options font-weight-700">Escolha um contato para enviar a mensagem:</h1>
+            <div class="option" onclick="select(this)">
+                <ion-icon name="people" class="side-bar-icons"></ion-icon>
+                <span class="option-name">
+                    <p class="all">Todos</p>
+                    <ion-icon name="checkmark" class="check visible"></ion-icon>           
+                </span>
+            </div>`;
+        for (let i = 0; i < allNames.data.length; i++) {
+            addContact.innerHTML += 
+                `<div class="option" onclick="select(this)">
+                    <ion-icon name="person-circle" class="side-bar-icons"></ion-icon>
+                    <span class="option-name">
+                        <p id="${allNames.data[i].name}">${allNames.data[i].name}</p>
+                        <ion-icon name="checkmark-sharp" class="check"></ion-icon>           
+                    </span>
+                </div>`;
+        }    
+    } else {
+        addContact.innerHTML = 
+            `<h1 class="options font-weight-700">Escolha um contato para enviar a mensagem:</h1>
+            <div class="option" onclick="select(this)">
+                <ion-icon name="people" class="side-bar-icons"></ion-icon>
+                <span class="option-name">
+                    <p class="all">Todos</p>
+                    <ion-icon name="checkmark" class="check"></ion-icon>           
+                </span>
+            </div>`;
+
+        let elementId = checkedPerson.previousElementSibling.id
+        for (let i = 0; i < allNames.data.length; i++) {
+            if (allNames.data[i].name === elementId) {
+                addContact.innerHTML += 
+                `<div class="option" onclick="select(this)">
+                    <ion-icon name="person-circle" class="side-bar-icons"></ion-icon>
+                    <span class="option-name">
+                        <p id="${allNames.data[i].name}">${allNames.data[i].name}</p>
+                        <ion-icon name="checkmark-sharp" class="check visible"></ion-icon>           
+                    </span>
+                </div>`;
+            } else {
+            addContact.innerHTML += 
+                `<div class="option" onclick="select(this)">
+                    <ion-icon name="person-circle" class="side-bar-icons"></ion-icon>
+                    <span class="option-name">
+                        <p id="${allNames.data[i].name}">${allNames.data[i].name}</p>
+                        <ion-icon name="checkmark-sharp" class="check"></ion-icon>           
+                    </span>
+                </div>`;
+            }
+        } 
+
+    }
+
+
+}
+
+// LISTAR USUÁRIOS ONLINE NA ABA LATERAL (atualização em tempo real com a renderização da página)
+/*
 function listOnlineUsers (text, from) {
 
     if (text === "entra na sala...") {
@@ -85,7 +155,7 @@ function listOnlineUsers (text, from) {
         }
     }
 }
-
+*/
 function handleMessagesError () {
     alert("Algo deu errado!");
 }
@@ -116,10 +186,12 @@ function processNameSucess () {
     let entryPage = document.querySelector(".entry-page");
     entryPage.classList.add("hidden");
     renderPage();
-    document.querySelector(".option .all").nextElementSibling.classList.add("visible");
+    getOnlineUsers();
     document.getElementById("public").nextElementSibling.classList.add("visible");
     //const rendering = setInterval(renderPage, 3000);
     const status = setInterval(userStatus, 5000);
+    
+    const onlineList = setInterval(getOnlineUsers, 10000);
     return status;
 }
 
@@ -148,6 +220,7 @@ function leftRoom () {
     alert("Você deixou a sala");
     clearInterval(rendering);
     clearInterval(status);
+    clearInterval(onlineList);
     refreshPage();
 }
 
@@ -210,6 +283,9 @@ function autoSelectContact () {
         document.querySelector(".bottom-bar .receiver").innerHTML = "";
         } else {
             alert("você não pode enviar mensagens reservadas a Todos! Selecione um contato.");
+            document.getElementById("secret").nextElementSibling.classList.remove("visible");
+            document.getElementById("public").nextElementSibling.classList.add("visible");
+            document.querySelector(".all").nextElementSibling.classList.add("visible");
         }
     }
 }
@@ -273,10 +349,36 @@ function sendMessageWithEnter (inputTag) {
 }
 
 
+// TEZTANOOOOOO
 
 
 
+/*
+function listOnlineUsers (text, from) {
 
+    if (text === "entra na sala...") {
+        let addContact = document.querySelector(".side-bar .contacts");
+        let checkPerson = document.getElementById(`${from}`);
+        if (checkPerson === null) {
+            addContact.innerHTML += 
+            `<div class="option" onclick="select(this)">
+                <ion-icon name="person-circle" class="side-bar-icons"></ion-icon>
+                <span class="option-name">
+                    <p id="${from}">${from}</p>
+                    <ion-icon name="checkmark-sharp"" class="check"></ion-icon>           
+                </span>
+            </div>`;
+        }
+    }
+    if (text === "sai da sala...") {
+        let removeContact = document.getElementById(`${from}`);
+        if (removeContact !== null) {
+            removeContact.parentElement.parentElement.outerHTML = "";
+        }
+    }
+}
+
+*/
 
 
 
