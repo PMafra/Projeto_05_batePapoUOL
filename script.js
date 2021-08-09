@@ -3,13 +3,12 @@ const SERVER_URL_STATUS = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uo
 const SERVER_URL_MESSAGES = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages"
 
 let userName = "";
-let onlineUsers;
 
 // RENDERIZAR PÁGINA
 function renderPage () {
     let promiseMessages = axios.get(SERVER_URL_MESSAGES);
     promiseMessages.then(processMessagesSucess);
-    promiseMessages.catch(handleMessagesError);
+    promiseMessages.catch(function () {console.log("Mensagens não renderizadas.");});
 }
 
 function processMessagesSucess (sucess) {
@@ -37,7 +36,7 @@ function processMessagesSucess (sucess) {
 function getOnlineUsers () {
     let allNamesPromise = axios.get(SERVER_URL_NAMES);
     allNamesPromise.then(listOnlineNames);
-    allNamesPromise.catch(function(){alert("Deu ruim!");});
+    allNamesPromise.catch(function(){console.log("Usuários não listados.");});
 }
 
 function listOnlineNames (allNames) {
@@ -106,8 +105,12 @@ function listOnlineNames (allNames) {
     }
 }
 
-function handleMessagesError () {
-    alert("Algo deu errado!");
+// APARECER TELA DE LOADING
+function loadingScreen () {
+    document.querySelector(".entry-page input").classList.add("hidden");
+    document.querySelector(".entry-page button").classList.add("hidden");
+    document.querySelector(".entry-page .loading").classList.remove("hidden");
+    document.querySelector(".entry-page .joining").classList.remove("hidden");
 }
 
 // PERGUNTAR E CHECAR NOME DO USUÁRIO
@@ -126,6 +129,7 @@ function checkUserName (data) {
     let requestName = axios.post(SERVER_URL_NAMES, data);
     requestName.then(processNameSucess);
     requestName.catch(handleNameError);
+    loadingScreen();
 }
 
 function processNameSucess () {
@@ -135,10 +139,9 @@ function processNameSucess () {
     renderPage();
     getOnlineUsers();
     document.getElementById("public").nextElementSibling.classList.add("visible");
-    const rendering = setInterval(renderPage, 3000);
-    const status = setInterval(userStatus, 5000);
-    const onlinePeople = setInterval(getOnlineUsers, 10000);
-    return status;
+    setInterval(renderPage, 3000);
+    setInterval(userStatus, 5000);
+    setInterval(getOnlineUsers, 10000);
 }
 
 function handleNameError (error) {
@@ -147,6 +150,7 @@ function handleNameError (error) {
     } else {
         alert("Deu ruim mas não sei porque!");
     }
+    refreshPage();
 }
 
 // VERIFICAR STATUS DO USUÁRIO
@@ -157,14 +161,11 @@ function userStatus () {
 }
 
 function stillConected () {
-    console.log("você se mantem conectado");
+    console.log("Você se mantem conectado");
 }
 
 function leftRoom () {
     alert("Você deixou a sala");
-    clearInterval(rendering);
-    clearInterval(status);
-    clearInterval(onlinePeople);
     refreshPage();
 }
 
