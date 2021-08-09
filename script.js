@@ -127,7 +127,13 @@ function listOnlineNames (allNames) {
 
     }
 
-
+    let receiverLeft = document.querySelector(".side-bar .contacts .visible");
+    if (receiverLeft === null) {
+        alert("Seu destinatário saiu da sala, selecione outro!");
+        document.getElementById("secret").nextElementSibling.classList.remove("visible");
+        document.getElementById("public").nextElementSibling.classList.add("visible");
+        document.querySelector(".all").nextElementSibling.classList.add("visible");
+    }
 }
 
 // LISTAR USUÁRIOS ONLINE NA ABA LATERAL (atualização em tempo real com a renderização da página)
@@ -191,7 +197,7 @@ function processNameSucess () {
     //const rendering = setInterval(renderPage, 3000);
     const status = setInterval(userStatus, 5000);
     
-    const onlineList = setInterval(getOnlineUsers, 10000);
+    const onlineList = setInterval(getOnlineUsers, 2000);
     return status;
 }
 
