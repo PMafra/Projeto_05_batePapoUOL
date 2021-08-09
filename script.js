@@ -180,6 +180,7 @@ function sideBar () {
     sideBar.classList.toggle("hidden");
     const blurredBackground = document.querySelector(".blurred-background");
     blurredBackground.classList.toggle("hidden");
+    document.querySelector("body").classList.toggle("hide-scrollbar");
 }
 
 let checked;
