@@ -167,7 +167,7 @@ main {
     bottom: 0;
     left: 0;
     box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1);
-    padding: 18px 27px 14px 17px;
+    padding: 15px 27px 14px 17px;
     z-index: 5;
     display: flex;
     flex-direction: column;
@@ -178,6 +178,7 @@ main {
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff;
+    margin-bottom: -10px;
 }
 
 .writing {
@@ -195,7 +196,7 @@ main {
 }
 
 .send-message {
-    font-size: 30px;
+    font-size: 42px;
     cursor: pointer;
 }
 

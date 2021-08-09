@@ -14,6 +14,7 @@ function renderPage () {
 
 function processMessagesSucess (sucess) {
     let allMessages = document.querySelector("main");
+    allMessages.innerHTML = "";
     for (let i = 0; i < sucess.data.length; i++) {      
         if (sucess.data[i].type === "status"){
             allMessages.innerHTML += `<div class="message-box status"><time>(${sucess.data[i].time})</time><strong class="font-weight-700">${sucess.data[i].from}</strong><p class="wrapping-word">${sucess.data[i].text}</p></div>`;
@@ -101,6 +102,7 @@ function listOnlineNames (allNames) {
         document.getElementById("secret").nextElementSibling.classList.remove("visible");
         document.getElementById("public").nextElementSibling.classList.add("visible");
         document.querySelector(".all").nextElementSibling.classList.add("visible");
+        document.querySelector(".bottom-bar .receiver").innerHTML = "";
     }
 }
 
